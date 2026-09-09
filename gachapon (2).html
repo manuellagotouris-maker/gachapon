@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Convocatoria de Lenguajes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root{
+    --bg-deep:#161233;
+    --bg-deep2:#201a4a;
+    --bubblegum:#ff6ec7;
+    --sky:#6ec3ff;
+    --yolk:#ffd93d;
+    --lime:#b8ff6e;
+    --ember:#ff8a5b;
+    --paper:#fff8ef;
+    --ink:#231c42;
+    --glow-3:#9fb4ff;
+    --glow-4:#c58bff;
+    --glow-5:#ffd93d;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    min-height:100vh;
+    background:
+      radial-gradient(ellipse 90% 60% at 50% -10%, #33296f 0%, transparent 60%),
+      radial-gradient(ellipse 70% 50% at 85% 100%, #2a1f5c 0%, transparent 55%),
+      linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-deep2) 100%);
+    font-family: 'Poppins', 'Nunito', system-ui, sans-serif;
+    color: var(--paper);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding: 28px 16px 60px;
+    overflow-x:hidden;
+    position:relative;
+  }
+  .stars{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.6;}
+  .stars span{
+    position:absolute; width:2px; height:2px; background:#fff; border-radius:50%;
+    animation: twinkle 3s ease-in-out infinite;
+  }
+  @keyframes twinkle{0%,100%{opacity:.15;}50%{opacity:.9;}}
+
+  h1{
+    font-family: Georgia, 'Baloo 2', 'Comic Sans MS', cursive, sans-serif;
+    font-weight:800;
+    font-size: clamp(28px, 5vw, 44px);
+    letter-spacing: .5px;
+    margin: 6px 0 2px;
+    background: linear-gradient(90deg, var(--bubblegum), var(--yolk), var(--sky));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    text-align:center;
+    z-index:1;
+  }
+  .subtitle{
+    color:#c9c2ff;
+    font-size:14px;
+    text-align:center;
+    max-width:480px;
+    margin-bottom: 22px;
+    z-index:1;
+    line-height:1.5;
+  }
+
+  /* ===== BANNER (personaje destacado) ===== */
+  .banner-wrap{
+    width:100%; max-width:640px; z-index:1; margin-bottom:26px;
+  }
+  .banner-label{
+    font-size:11px; letter-spacing:2px; text-transform:uppercase;
+    color: var(--yolk); text-align:center; margin-bottom:8px; font-weight:700;
+  }
+  .banner-card{
+    display:flex; gap:18px; align-items:stretch;
+    background: linear-gradient(160deg, #2a2260, #1a1440);
+    border: 2px solid var(--glow-5);
+    box-shadow: 0 0 40px rgba(255,217,61,0.25);
+    border-radius: 20px;
+    padding: 18px;
+    flex-wrap:wrap;
+  }
+  .banner-portrait{
+    flex: 0 0 140px;
+    height:140px;
+    border-radius:16px;
+    position:relative;
+    overflow:hidden;
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.25);
+  }
+  .banner-portrait .portrait-fallback{ font-size:64px; }
+  .banner-portrait::after{
+    content:''; position:absolute; inset:0; z-index:2;
+    background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.35), transparent 60%);
+  }
+  /* ===== retratos con imagen + respaldo emoji ===== */
+  .portrait-img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:1; }
+  .portrait-fallback{
+    position:absolute; inset:0; z-index:1;
+    display:none; align-items:center; justify-content:center;
+  }
+  .banner-info{ flex:1; min-width:200px; }
+  .banner-name{ font-family:Georgia,serif; font-size:22px; font-weight:800; margin:0 0 4px; }
+  .stars-row{ color: var(--glow-5); font-size:14px; letter-spacing:2px; margin-bottom:6px; }
+  .banner-meta{ font-size:12px; color:#c9c2ff; margin-bottom:8px; line-height:1.6; }
+  .banner-quote{ font-size:12.5px; font-style:italic; color:#e6dfff; margin-bottom:10px; }
+  .banner-tags{ display:flex; gap:14px; flex-wrap:wrap; font-size:11px; color:#a89dd6; }
+  .banner-tags b{ color:var(--paper); display:block; font-size:11px; }
+
+  /* ===== MONITOR CRT (sintonizador) ===== */
+  .machine-wrap{
+    position:relative; z-index:1;
+    display:flex; flex-direction:column; align-items:center;
+  }
+  .tv-frame{
+    width: 270px;
+    background: linear-gradient(160deg, #3a3550, #201c38 70%);
+    border-radius: 18px;
+    padding: 16px 16px 20px;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.5), inset 0 2px 0 rgba(255,255,255,0.08);
+    position:relative;
+  }
+  .tv-frame::before{
+    content:''; position:absolute; inset:-3px;
+    border-radius:20px; border:2px solid rgba(255,255,255,0.06); pointer-events:none;
+  }
+  .tv-screen{
+    width:100%; height:170px; border-radius:10px;
+    background: #050308;
+    position:relative; overflow:hidden;
+    box-shadow: inset 0 0 0 3px #0a0812, inset 0 0 30px rgba(0,0,0,0.9);
+    cursor:pointer;
+  }
+  .tv-off-hint{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-size:11px; letter-spacing:2px; text-transform:uppercase; color:#5b5478;
+    text-align:center; padding:0 20px; transition:opacity .2s ease;
+  }
+  .tv-scanlines{
+    position:absolute; inset:0; pointer-events:none; z-index:5; opacity:.25;
+    background: repeating-linear-gradient(0deg, rgba(0,0,0,0.5) 0px, rgba(0,0,0,0.5) 1px, transparent 2px, transparent 3px);
+  }
+  .tv-glass{
+    position:absolute; inset:0; pointer-events:none; z-index:6;
+    background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.12), transparent 55%);
+  }
+  .tv-flicker{
+    position:absolute; inset:0; background:#fff; opacity:0; z-index:7; pointer-events:none;
+  }
+  .tv-screen.powering .tv-flicker{ animation: flicker .35s steps(2) 1; }
+  @keyframes flicker{
+    0%{opacity:.9;} 20%{opacity:0;} 40%{opacity:.6;} 60%{opacity:0;} 80%{opacity:.35;} 100%{opacity:0;}
+  }
+  .tv-static{
+    position:absolute; inset:-20%; z-index:2; opacity:0;
+    background: conic-gradient(from 0deg, var(--bubblegum), var(--sky), var(--yolk), var(--lime), var(--glow-4), var(--bubblegum));
+    filter: blur(0px) saturate(1.4);
+  }
+  .tv-screen.tuning .tv-static{ opacity:1; animation: staticspin 1s linear infinite, staticscale 1s ease-in-out infinite; }
+  @keyframes staticspin{ to{ transform: rotate(360deg);} }
+  @keyframes staticscale{ 0%,100%{ filter:blur(0px) saturate(1.4);} 50%{ filter:blur(2px) saturate(2);} }
+  .tv-burst{
+    position:absolute; inset:0; z-index:3;
+    background: radial-gradient(circle, var(--burst-color, var(--glow-3)) 0%, transparent 70%);
+    opacity:0; transform:scale(.2);
+  }
+  .tv-screen.bursting .tv-burst{ animation: burst .55s cubic-bezier(.2,.8,.3,1) forwards; }
+  @keyframes burst{ 0%{opacity:0; transform:scale(.2);} 40%{opacity:1; transform:scale(1.3);} 100%{opacity:0; transform:scale(1.8);} }
+  .tv-reveal{
+    position:absolute; inset:0; z-index:4;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    opacity:0; background:#000;
+  }
+  .tv-screen.revealing .tv-reveal{ opacity:1; }
+  .tv-reveal-emoji{
+    width:64px; height:64px; position:relative;
+    filter:grayscale(1) brightness(.6); transform:scale(.9);
+    transition: filter .5s ease, transform .5s ease;
+  }
+  .tv-reveal-emoji .portrait-img{ object-fit:contain; }
+  .tv-reveal-emoji .portrait-fallback{ font-size:54px; }
+  .tv-screen.revealing.colorize .tv-reveal-emoji{ filter:grayscale(0) brightness(1); transform:scale(1); }
+  .tv-reveal-name{
+    margin-top:8px; font-family:Georgia,serif; font-weight:800; font-size:15px;
+    letter-spacing:3px; text-transform:uppercase; color:#888;
+    text-shadow: 0 0 12px rgba(0,0,0,0.6);
+    transition: color .5s ease, text-shadow .5s ease;
+  }
+  .tv-screen.revealing.colorize .tv-reveal-name{
+    color:var(--paper); text-shadow: 0 0 16px var(--burst-color, var(--glow-5));
+  }
+  .tv-power-row{ display:flex; align-items:center; justify-content:space-between; margin-top:10px; padding:0 2px; }
+  .tv-dots{ display:flex; gap:6px; }
+  .tv-dots span{ width:6px; height:6px; border-radius:50%; background:#4a4468; display:block; }
+  .tv-power-label{ font-size:9px; color:#6f68930; letter-spacing:1.5px; color:#7b74a0; }
+  .tv-legs{ display:flex; justify-content:space-between; width:150px; margin-top:6px; }
+  .tv-legs span{ width:16px; height:14px; background:#1c1830; border-radius:0 0 6px 6px; display:block; }
+
+  .cta-row{ display:flex; gap:12px; margin-top: 20px; flex-wrap:wrap; justify-content:center; z-index:1;}
+  .cta{
+    padding: 13px 30px; border-radius: 999px; border: none;
+    font-family: inherit; font-weight: 700; font-size: 14.5px; letter-spacing: .3px;
+    color: var(--ink);
+    background: linear-gradient(90deg, var(--yolk), var(--lime));
+    cursor: pointer;
+    box-shadow: 0 6px 0 #b39400, 0 10px 20px rgba(0,0,0,0.35);
+    transition: transform .08s ease, box-shadow .08s ease;
+  }
+  .cta.x10{ background: linear-gradient(90deg, var(--bubblegum), #c58bff); box-shadow: 0 6px 0 #8a3aa8, 0 10px 20px rgba(0,0,0,0.35); color:#fff;}
+  .cta:active{ transform: translateY(4px); box-shadow: 0 2px 0 #b39400;}
+  .cta.x10:active{ box-shadow: 0 2px 0 #8a3aa8;}
+  .cta:disabled{ opacity:.5; cursor:not-allowed; }
+
+  .pity{ margin-top:14px; font-size:11.5px; color:#c9c2ff; z-index:1; text-align:center; line-height:1.9;}
+  .pity b{ color: var(--yolk); }
+  .pity .g50{ color: var(--bubblegum); font-weight:700; }
+
+  /* RESULT CARD (single pull) */
+  .result-overlay{
+    position:fixed; inset:0; background:rgba(10,6,30,0.8);
+    display:flex; align-items:center; justify-content:center;
+    z-index: 50; opacity:0; pointer-events:none;
+    transition: opacity .25s ease; backdrop-filter: blur(3px);
+    padding:16px;
+  }
+  .result-overlay.show{ opacity:1; pointer-events:all; }
+  .result-card{
+    width: 300px;
+    border-radius: 20px;
+    padding: 24px 20px 22px;
+    background: linear-gradient(160deg, #2a2260, #1a1440);
+    border: 2px solid var(--card-glow, var(--glow-3));
+    box-shadow: 0 0 0px var(--card-glow, var(--glow-3));
+    text-align:center;
+    transform: scale(.8) translateY(10px);
+    transition: transform .35s cubic-bezier(.3,1.4,.4,1), box-shadow .4s ease;
+    position:relative;
+    max-height:88vh; overflow-y:auto;
+  }
+  .result-overlay.show .result-card{
+    transform: scale(1) translateY(0);
+    box-shadow: 0 0 55px var(--card-glow, var(--glow-3));
+  }
+  .rarity-tag{
+    display:inline-block; font-size: 11px; font-weight:700; letter-spacing: 1.5px;
+    text-transform:uppercase; padding: 4px 14px; border-radius: 999px;
+    background: var(--card-glow, var(--glow-3)); color: var(--ink); margin-bottom: 12px;
+  }
+  .card-portrait{
+    width:100%; height:130px; border-radius:14px; margin-bottom:14px;
+    position:relative; overflow:hidden;
+  }
+  .card-portrait .portrait-fallback{ font-size:58px; }
+  .card-portrait::after{
+    content:''; position:absolute; inset:0; z-index:2;
+    background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.35), transparent 60%);
+  }
+  .item-name{ font-size:19px; font-weight:800; line-height:1.3; color:var(--paper); margin-bottom:2px;}
+  .card-stars{ color:var(--glow-5); font-size:14px; letter-spacing:2px; margin-bottom:10px;}
+  .card-quote{ font-size:12px; font-style:italic; color:#d8cfff; margin-bottom:12px; line-height:1.5;}
+  .card-tags{ display:flex; flex-direction:column; gap:6px; font-size:11px; color:#a89dd6; text-align:left; background:rgba(255,255,255,0.05); border-radius:10px; padding:10px 12px; margin-bottom:14px;}
+  .card-tags div b{ color:var(--paper); }
+  .close-result{
+    border:none; background: rgba(255,255,255,0.12); color:var(--paper);
+    padding:9px 22px; border-radius:999px; cursor:pointer; font-family:inherit; font-weight:600; font-size:13px;
+  }
+  .close-result:hover{ background: rgba(255,255,255,0.2); }
+
+  .confetti{
+    position:absolute; width:8px; height:8px; top:-10px;
+    animation: confettifall 1.4s ease-in forwards;
+  }
+  @keyframes confettifall{ to{ transform: translateY(340px) rotate(540deg); opacity:0; } }
+
+  /* MULTI RESULT (x10) */
+  .multi-card{
+    width:100%; max-width:560px;
+    border-radius: 20px; padding: 22px 18px;
+    background: linear-gradient(160deg, #2a2260, #1a1440);
+    border: 2px solid var(--glow-5);
+    box-shadow: 0 0 45px rgba(255,217,61,0.2);
+    text-align:center;
+    transform: scale(.85); transition: transform .35s cubic-bezier(.3,1.4,.4,1);
+    max-height:88vh; overflow-y:auto;
+  }
+  .result-overlay.show .multi-card{ transform: scale(1); }
+  .multi-title{ font-family:Georgia,serif; font-size:18px; color:var(--yolk); margin:0 0 4px;}
+  .multi-sub{ font-size:11.5px; color:#c9c2ff; margin-bottom:16px;}
+  .multi-grid{
+    display:grid; grid-template-columns: repeat(auto-fill, minmax(92px,1fr));
+    gap:10px; margin-bottom:16px;
+  }
+  .mini-card{
+    background: rgba(255,255,255,0.06);
+    border: 2px solid var(--tag, var(--glow-3));
+    border-radius: 12px; padding: 10px 6px 8px;
+    cursor:pointer; transition: transform .1s ease;
+  }
+  .mini-card:hover{ transform: translateY(-3px); }
+  .mini-card .emo{ width:36px; height:36px; margin:0 auto 4px; position:relative; display:block;}
+  .mini-card .emo .portrait-img{ object-fit:contain; }
+  .mini-card .emo .portrait-fallback{ font-size:28px; }
+  .mini-card .nm{ font-size:10.5px; font-weight:700; line-height:1.2; color:var(--paper);}
+  .mini-card .st{ color:var(--glow-5); font-size:9px; letter-spacing:1px; margin-top:2px; display:block;}
+  .mini-card.is5{ box-shadow: 0 0 14px var(--glow-5); }
+  .mini-card.is4{ box-shadow: 0 0 10px var(--glow-4); }
+
+  /* COLLECTION */
+  .collection-wrap{ width:100%; max-width: 640px; margin-top: 40px; z-index:1; }
+  .collection-head{
+    display:flex; justify-content:space-between; align-items:baseline; margin-bottom:12px;
+    flex-wrap:wrap; gap:8px;
+  }
+  .collection-head h2{ font-family: Georgia, serif; font-size:18px; margin:0; color:var(--yolk); }
+  .collection-stats{ font-size:12px; color:#a89dd6; }
+  .grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(120px,1fr)); gap:10px; }
+  .grid-item{
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--tag, rgba(255,255,255,0.15));
+    border-radius: 12px; padding: 12px 8px; text-align:center;
+    font-size:11px; line-height:1.35; position:relative;
+  }
+  .grid-item .emo{ width:32px; height:32px; margin:0 auto 6px; position:relative; display:block; }
+  .grid-item .emo .portrait-img{ object-fit:contain; }
+  .grid-item .emo .portrait-fallback{ font-size:24px; }
+  .grid-item .st{ color:var(--glow-5); font-size:9px; letter-spacing:1px; display:block; margin-bottom:3px;}
+  .grid-item .count{
+    position:absolute; top:6px; right:8px; font-size:10px;
+    background:rgba(0,0,0,0.35); border-radius:8px; padding:1px 6px; color:#ddd;
+  }
+  .empty-msg{ font-size:13px; color:#8b7fc0; text-align:center; padding: 30px 0;}
+
+  .legend{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:14px; z-index:1; }
+  .legend span{ font-size:10px; padding:3px 10px; border-radius:999px; color:var(--ink); font-weight:700; }
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<h1>Convocatoria de Lenguajes</h1>
+<p class="subtitle">Girá la manivela y convocá personajes basados en lenguajes de programación. Sistema de probabilidades y pity idénticos a los banners de Genshin Impact.</p>
+
+<div class="banner-wrap">
+  <div class="banner-label">★ En el banner ★</div>
+  <div class="banner-card" id="bannerCard"></div>
+</div>
+
+<div class="machine-wrap">
+  <div class="tv-frame">
+    <div class="tv-screen" id="tvScreen">
+      <div class="tv-off-hint" id="tvHint">Tocá para sintonizar 📺</div>
+      <div class="tv-static"></div>
+      <div class="tv-burst" id="tvBurst"></div>
+      <div class="tv-reveal" id="tvReveal">
+        <div class="tv-reveal-emoji" id="tvRevealEmoji"></div>
+        <div class="tv-reveal-name" id="tvRevealName">???</div>
+      </div>
+      <div class="tv-scanlines"></div>
+      <div class="tv-glass"></div>
+      <div class="tv-flicker"></div>
+    </div>
+    <div class="tv-power-row">
+      <div class="tv-dots"><span></span><span></span><span></span></div>
+      <div class="tv-power-label">CANAL · SINTONIZADOR</div>
+    </div>
+  </div>
+  <div class="tv-legs"><span></span><span></span></div>
+</div>
+
+<div class="cta-row">
+  <button class="cta" id="pullBtn1">Sintonizar x1</button>
+  <button class="cta x10" id="pullBtn10">Sintonizar x10</button>
+</div>
+
+<div class="pity" id="pityText"></div>
+
+<div class="legend">
+  <span style="background:var(--glow-3)">3★ 94.3%</span>
+  <span style="background:var(--glow-4)">4★ 5.1%</span>
+  <span style="background:var(--glow-5)">5★ 0.6%</span>
+</div>
+
+<div class="collection-wrap">
+  <div class="collection-head">
+    <h2>Tu colección de personajes</h2>
+    <div class="collection-stats" id="collStats">0 personajes · 0 convocatorias</div>
+  </div>
+  <div class="grid" id="grid"></div>
+  <div class="empty-msg" id="emptyMsg">Todavía no convocaste a ningún personaje. ¡Girá la manivela!</div>
+</div>
+
+<!-- overlay para pull simple -->
+<div class="result-overlay" id="overlay">
+  <div class="result-card" id="resultCard">
+    <span class="rarity-tag" id="rarityTag">3★</span>
+    <div class="card-portrait" id="cardPortrait"></div>
+    <div class="item-name" id="itemName">...</div>
+    <div class="card-stars" id="cardStars"></div>
+    <div class="card-quote" id="cardQuote"></div>
+    <div class="card-tags" id="cardTags"></div>
+    <button class="close-result" id="closeResult">Guardar</button>
+  </div>
+</div>
+
+<!-- overlay para pull x10 -->
+<div class="result-overlay" id="overlayMulti">
+  <div class="multi-card">
+    <h3 class="multi-title">Resultado de la convocatoria x10</h3>
+    <p class="multi-sub">Tocá un personaje para ver su ficha completa</p>
+    <div class="multi-grid" id="multiGrid"></div>
+    <button class="close-result" id="closeMulti">Cerrar</button>
+  </div>
+</div>
+
+<script>
+/* ================= PERSONAJES ================= */
+const POOL5 = [
+  { id:'python', name:'Python', rarity:5, featured:true, emoji:'🐍', colorA:'#3776AB', colorB:'#2b5a80',
+    vision:'Lógica', elemento:'Computacional', arma:'Catalizador', afiliacion:'Academia de Sumeru', constelacion:'Serpens Infinita',
+    quote:'La belleza del código está en su simplicidad y en su poder.' },
+  { id:'javascript', name:'JavaScript', rarity:5, featured:false, emoji:'⚡', colorA:'#F7DF1E', colorB:'#8a7d10',
+    vision:'Caos Creativo', elemento:'Web', arma:'Espada', afiliacion:'Gremio del Navegador', constelacion:'Promesa Eterna',
+    quote:'Todo es posible, incluso lo que no debería funcionar.' },
+  { id:'cpp', name:'C++', rarity:5, featured:false, emoji:'⚙️', colorA:'#00599C', colorB:'#003a66',
+    vision:'Control Total', elemento:'Sistema', arma:'Lanza', afiliacion:'Legión de Bajo Nivel', constelacion:'Puntero Certero',
+    quote:'La velocidad se paga con disciplina.' },
+  { id:'rust', name:'Rust', rarity:5, featured:false, emoji:'🦀', colorA:'#CE7F3D', colorB:'#7a4a1f',
+    vision:'Seguridad', elemento:'Memoria', arma:'Catalizador de Hierro', afiliacion:'Orden del Borrow Checker', constelacion:'Propiedad Eterna',
+    quote:'Nada se rompe si nadie lo posee dos veces.' },
+  { id:'java', name:'Java', rarity:5, featured:false, emoji:'☕', colorA:'#f89820', colorB:'#5382a1',
+    vision:'Disciplina', elemento:'Empresarial', arma:'Arco', afiliacion:'Academia Enterprise', constelacion:'Máquina Virtual',
+    quote:'Escribí una vez, corré en cualquier lado.' },
+  { id:'go', name:'Go', rarity:5, featured:false, emoji:'🐹', colorA:'#00ADD8', colorB:'#00758f',
+    vision:'Velocidad', elemento:'Concurrencia', arma:'Dagas Gemelas', afiliacion:'Orden de las Goroutines', constelacion:'Canal Infinito',
+    quote:'Simple no significa fácil, significa claro.' },
+];
+
+const POOL4 = [
+  { id:'typescript', name:'TypeScript', rarity:4, emoji:'📘', colorA:'#3178C6', colorB:'#1f4c85',
+    vision:'Orden', elemento:'Tipado', arma:'Escudo', afiliacion:'Guardia de Tipos', constelacion:'Interfaz Certera',
+    quote:'El caos necesita tipos, o tarde o temprano explota.' },
+  { id:'kotlin', name:'Kotlin', rarity:4, emoji:'🎯', colorA:'#7F52FF', colorB:'#4d2fc7',
+    vision:'Fusión', elemento:'Móvil', arma:'Espada Doble', afiliacion:'Alianza Android', constelacion:'Null Seguro',
+    quote:'Menos código, mismo poder, cero dolores de cabeza.' },
+  { id:'swift', name:'Swift', rarity:4, emoji:'🦅', colorA:'#FA7343', colorB:'#c14e1f',
+    vision:'Elegancia', elemento:'Móvil', arma:'Pluma Filosa', afiliacion:'Gremio de la Manzana', constelacion:'Opcional Certero',
+    quote:'La elegancia también puede ser rápida.' },
+  { id:'csharp', name:'C#', rarity:4, emoji:'🎮', colorA:'#9B4F96', colorB:'#512BD4',
+    vision:'Estructura', elemento:'Empresarial', arma:'Cetro', afiliacion:'Academia .NET', constelacion:'Delegado Fiel',
+    quote:'Todo objeto tiene su lugar, y yo se lo doy.' },
+  { id:'ruby', name:'Ruby', rarity:4, emoji:'💎', colorA:'#CC342D', colorB:'#8a1f1a',
+    vision:'Belleza', elemento:'Web', arma:'Pluma', afiliacion:'Gremio de Rails', constelacion:'Gema Pura',
+    quote:'El código también puede ser poesía.' },
+  { id:'php', name:'PHP', rarity:4, emoji:'🐘', colorA:'#777BB4', colorB:'#4b4f82',
+    vision:'Persistencia', elemento:'Web', arma:'Vara Veterana', afiliacion:'Legión del Servidor', constelacion:'Sesión Eterna',
+    quote:'Sigo vivo, y voy a seguir sirviendo páginas.' },
+  { id:'dart', name:'Dart', rarity:4, emoji:'🏹', colorA:'#0175C2', colorB:'#014e82',
+    vision:'Fluidez', elemento:'Móvil', arma:'Arco', afiliacion:'Escuadrón Flutter', constelacion:'Widget Certero',
+    quote:'Apunto, disparo, y la interfaz vuela.' },
+  { id:'scala', name:'Scala', rarity:4, emoji:'🔺', colorA:'#DC322F', colorB:'#8f1f1c',
+    vision:'Hibridación', elemento:'JVM', arma:'Prisma', afiliacion:'Orden JVM', constelacion:'Mónada Silenciosa',
+    quote:'Ni puramente funcional, ni puramente terco: soy ambas cosas.' },
+];
+
+const POOL3 = [
+  { id:'monitor', name:'Monitor', rarity:3, emoji:'🖥️', colorA:'#4a4a4a', colorB:'#1a1a1a',
+    vision:'Claridad', elemento:'Hardware', arma:'Panel LED', afiliacion:'Escritorio de Batalla', constelacion:'Brillo Infinito',
+    quote:'Yo vi tu código a las 3 de la mañana y no dije nada.' },
+  { id:'mouse', name:'Mouse', rarity:3, emoji:'🖱️', colorA:'#1e1e2a', colorB:'#00d4ff',
+    vision:'Precisión', elemento:'Hardware', arma:'Click Certero', afiliacion:'Escritorio de Batalla', constelacion:'Doble Click Perfecto',
+    quote:'Click, click, click, hasta encontrar el bug.' },
+  { id:'teclado', name:'Teclado Mecánico', rarity:3, emoji:'⌨️', colorA:'#2b2b2b', colorB:'#ffd93d',
+    vision:'Ritmo', elemento:'Hardware', arma:'Switches Azules', afiliacion:'Escritorio de Batalla', constelacion:'Tecleo Infinito',
+    quote:'Cada tecla suena a progreso. O a enojo. Depende del día.' },
+  { id:'mate', name:'Mate', rarity:3, emoji:'🧉', colorA:'#4a7c3c', colorB:'#2e4d24',
+    vision:'Resistencia', elemento:'Combustible', arma:'Bombilla Filosa', afiliacion:'Ritual Argento', constelacion:'Termo Eterno',
+    quote:'Sin mate no hay commit que valga.' },
+  { id:'auriculares', name:'Auriculares', rarity:3, emoji:'🎧', colorA:'#333333', colorB:'#8b5cf6',
+    vision:'Concentración', elemento:'Audio', arma:'Cancelación de Ruido', afiliacion:'Zona de Foco', constelacion:'Silencio Absoluto',
+    quote:'El único que te saca del código sin decir una palabra.' },
+  { id:'silla', name:'Silla Gamer', rarity:3, emoji:'🪑', colorA:'#1a1a1a', colorB:'#e63946',
+    vision:'Aguante', elemento:'Ergonomía', arma:'Reposabrazos Reforzado', afiliacion:'Escritorio de Batalla', constelacion:'Postura Eterna',
+    quote:'Aguanto sprints de 12 horas sin quejarme. Mucho.' },
+  { id:'router', name:'Router WiFi', rarity:3, emoji:'📶', colorA:'#2c2c2c', colorB:'#00ADD8',
+    vision:'Conexión', elemento:'Red', arma:'Señal de 5GHz', afiliacion:'Torre de Control', constelacion:'Ping Infinito',
+    quote:'Si me caigo yo, se cae el sprint entero.' },
+  { id:'pato', name:'Pato de Goma', rarity:3, emoji:'🦆', colorA:'#ffd93d', colorB:'#f2a900',
+    vision:'Escucha', elemento:'Debugging', arma:'Silencio Cómplice', afiliacion:'Rubber Duck Debugging', constelacion:'Bug Resuelto Solo',
+    quote:'Le explico el problema y, misteriosamente, lo resuelvo yo solo.' },
+];
+
+const RARITY_GLOW = { 3:'var(--glow-3)', 4:'var(--glow-4)', 5:'var(--glow-5)' };
+
+/* ================= PITY (sistema real de Genshin) ================= */
+// 5★: soft pity desde la tirada 74, hard pity garantizado en la tirada 90.
+// 4★: garantizado cada 10 tiradas sin 4★/5★. Un 5★ resetea también el pity de 4★.
+// 50/50: si perdés, la próxima 5★ está garantizada para el personaje del banner.
+let pity5 = 0;
+let pity4 = 0;
+let guaranteed5 = false;
+let history = [];
+let totalPulls = 0;
+
+function chance5(pullPos){
+  if(pullPos >= 90) return 1;
+  if(pullPos >= 74) return 0.006 + (pullPos - 73) * 0.06;
+  return 0.006;
+}
+
+function rollOnce(){
+  totalPulls++;
+  const pullPos5 = pity5 + 1;
+  const c5 = chance5(pullPos5);
+
+  if(Math.random() < c5 || pullPos5 >= 90){
+    // 5★
+    pity5 = 0; pity4 = 0;
+    let isFeatured;
+    if(guaranteed5){ isFeatured = true; guaranteed5 = false; }
+    else { isFeatured = Math.random() < 0.5; guaranteed5 = !isFeatured; }
+    const char = isFeatured ? POOL5.find(c=>c.featured) : POOL5.filter(c=>!c.featured)[Math.floor(Math.random()*(POOL5.length-1))];
+    const result = {...char};
+    history.push(result);
+    return result;
+  }
+
+  const pullPos4 = pity4 + 1;
+  const get4 = pullPos4 >= 10 || Math.random() < 0.051;
+  if(get4){
+    pity4 = 0; pity5++;
+    const char = POOL4[Math.floor(Math.random()*POOL4.length)];
+    const result = {...char};
+    history.push(result);
+    return result;
+  } else {
+    pity4++; pity5++;
+    const char = POOL3[Math.floor(Math.random()*POOL3.length)];
+    const result = {...char};
+    history.push(result);
+    return result;
+  }
+}
+
+/* ================= RENDER ================= */
+function renderStars(){
+  const c = document.getElementById('stars');
+  for(let i=0;i<60;i++){
+    const s = document.createElement('span');
+    s.style.left = Math.random()*100+'%';
+    s.style.top = Math.random()*100+'%';
+    s.style.animationDelay = (Math.random()*3)+'s';
+    c.appendChild(s);
+  }
+}
+renderStars();
+
+function starsHtml(n){ return '★'.repeat(n) + '☆'.repeat(5-n); }
+
+// Carpeta donde van las imágenes: images/<id>.png (ej: images/python.png)
+// Si la imagen no existe todavía, se muestra el emoji de respaldo automáticamente.
+const IMG_DIR = 'images/';
+function portraitInner(char){
+  return `<img class="portrait-img" src="${IMG_DIR}${char.id}.png" alt="${char.name}"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="portrait-fallback">${char.emoji}</div>`;
+}
+
+function renderBanner(){
+  const c = POOL5.find(p=>p.featured);
+  const el = document.getElementById('bannerCard');
+  el.innerHTML = `
+    <div class="banner-portrait" style="background:linear-gradient(160deg, ${c.colorA}, ${c.colorB})">${portraitInner(c)}</div>
+    <div class="banner-info">
+      <div class="banner-name">${c.name}</div>
+      <div class="stars-row">${starsHtml(5)}</div>
+      <div class="banner-meta">Visión: ${c.vision} &nbsp;·&nbsp; Elemento: ${c.elemento}</div>
+      <div class="banner-quote">"${c.quote}"</div>
+      <div class="banner-tags">
+        <div><b>ARMA</b>${c.arma}</div>
+        <div><b>AFILIACIÓN</b>${c.afiliacion}</div>
+        <div><b>CONSTELACIÓN</b>${c.constelacion}</div>
+      </div>
+    </div>`;
+}
+renderBanner();
+
+function updatePityText(){
+  const g50 = guaranteed5 ? '<span class="g50">Garantizado ✅</span>' : 'Normal (50/50)';
+  document.getElementById('pityText').innerHTML =
+    `⭐ Pity 5★: <b>${pity5}</b> / 90 &nbsp;·&nbsp; 🌟 Pity 4★: <b>${pity4}</b> / 10<br>
+     Próximo 5★: ${g50}`;
+}
+updatePityText();
+
+function updateCollection(){
+  const grid = document.getElementById('grid');
+  const emptyMsg = document.getElementById('emptyMsg');
+  const stats = document.getElementById('collStats');
+  grid.innerHTML = '';
+  if(history.length === 0){
+    emptyMsg.style.display='block';
+    stats.textContent = '0 personajes · 0 convocatorias';
+    return;
+  }
+  emptyMsg.style.display='none';
+
+  const counts = {};
+  history.forEach(h=>{
+    counts[h.id] = counts[h.id] || {...h, n:0};
+    counts[h.id].n++;
+  });
+  const uniqueList = Object.values(counts).sort((a,b)=> b.rarity - a.rarity || a.name.localeCompare(b.name));
+  stats.textContent = `${uniqueList.length} personajes distintos · ${history.length} convocatorias`;
+
+  uniqueList.forEach(item=>{
+    const div = document.createElement('div');
+    div.className='grid-item';
+    div.style.setProperty('--tag', RARITY_GLOW[item.rarity]);
+    div.innerHTML = `<span class="emo">${portraitInner(item)}</span><span class="st">${starsHtml(item.rarity)}</span>${item.name}<span class="count">x${item.n}</span>`;
+    grid.appendChild(div);
+  });
+}
+updateCollection();
+
+function spawnConfetti(container){
+  const colors = ['var(--bubblegum)','var(--yolk)','var(--sky)','var(--lime)','var(--ember)'];
+  for(let i=0;i<26;i++){
+    const c = document.createElement('div');
+    c.className='confetti';
+    c.style.left = (Math.random()*100)+'%';
+    c.style.background = colors[Math.floor(Math.random()*colors.length)];
+    c.style.animationDelay = (Math.random()*0.3)+'s';
+    c.style.borderRadius = Math.random()>0.5 ? '50%':'2px';
+    container.appendChild(c);
+    setTimeout(()=>c.remove(), 1700);
+  }
+}
+
+function fillBigCard(container, char){
+  container.querySelector('#rarityTag') && (container.querySelector('#rarityTag').textContent = char.rarity+'★');
+}
+
+function showResult(char){
+  const overlay = document.getElementById('overlay');
+  const card = document.getElementById('resultCard');
+  document.getElementById('rarityTag').textContent = char.rarity+'★';
+  document.getElementById('cardPortrait').style.background = `linear-gradient(160deg, ${char.colorA}, ${char.colorB})`;
+  document.getElementById('cardPortrait').innerHTML = portraitInner(char);
+  document.getElementById('itemName').textContent = char.name;
+  document.getElementById('cardStars').innerHTML = starsHtml(char.rarity);
+  document.getElementById('cardQuote').textContent = `"${char.quote}"`;
+  document.getElementById('cardTags').innerHTML = `
+    <div><b>Visión:</b> ${char.vision} &nbsp;·&nbsp; <b>Elemento:</b> ${char.elemento}</div>
+    <div><b>Arma:</b> ${char.arma}</div>
+    <div><b>Afiliación:</b> ${char.afiliacion}</div>
+    <div><b>Constelación:</b> ${char.constelacion}</div>`;
+  card.style.setProperty('--card-glow', RARITY_GLOW[char.rarity]);
+  overlay.classList.add('show');
+  if(char.rarity >= 4){ spawnConfetti(card); }
+}
+
+function showMultiResult(chars){
+  const overlay = document.getElementById('overlayMulti');
+  const grid = document.getElementById('multiGrid');
+  grid.innerHTML = '';
+  chars.forEach(char=>{
+    const div = document.createElement('div');
+    div.className = 'mini-card is'+char.rarity;
+    div.style.setProperty('--tag', RARITY_GLOW[char.rarity]);
+    div.innerHTML = `<span class="emo">${portraitInner(char)}</span><span class="nm">${char.name}</span><span class="st">${starsHtml(char.rarity)}</span>`;
+    div.addEventListener('click', ()=>{ showResult(char); });
+    grid.appendChild(div);
+  });
+  overlay.classList.add('show');
+  if(chars.some(c=>c.rarity===5)){ spawnConfetti(document.querySelector('.multi-card')); }
+}
+
+let spinning = false;
+
+function setBtns(disabled){
+  document.getElementById('pullBtn1').disabled = disabled;
+  document.getElementById('pullBtn10').disabled = disabled;
+}
+
+function doPull(n){
+  if(spinning) return;
+  spinning = true;
+  setBtns(true);
+
+  const results = [];
+  for(let i=0;i<n;i++){ results.push(rollOnce()); }
+  const bestRarity = Math.max(...results.map(r=>r.rarity));
+  const bestChar = results.find(r=>r.rarity===bestRarity);
+  const burstColor = RARITY_GLOW[bestRarity];
+
+  const screen = document.getElementById('tvScreen');
+  const hint = document.getElementById('tvHint');
+  const burst = document.getElementById('tvBurst');
+  const revealEmoji = document.getElementById('tvRevealEmoji');
+  const revealName = document.getElementById('tvRevealName');
+
+  hint.style.opacity = '0';
+  screen.style.setProperty('--burst-color', burstColor);
+  screen.className = 'tv-screen powering';
+
+  // 1) encendido con flicker (0 - 350ms)
+  setTimeout(()=>{
+    screen.className = 'tv-screen tuning';
+  }, 250);
+
+  // 2) estática girando (250 - 1150ms), luego destello de rareza
+  setTimeout(()=>{
+    screen.className = 'tv-screen bursting';
+    burst.style.setProperty('--burst-color', burstColor);
+  }, 1150);
+
+  // 3) revelado: silueta -> color (1400ms en adelante)
+  setTimeout(()=>{
+    revealEmoji.innerHTML = portraitInner(bestChar);
+    revealName.textContent = bestChar.name;
+    screen.className = 'tv-screen revealing';
+    void screen.offsetWidth;
+    setTimeout(()=> screen.classList.add('colorize'), 60);
+  }, 1400);
+
+  // 4) mostrar resultado (cartas) y apagar pantalla
+  setTimeout(()=>{
+    updatePityText();
+    updateCollection();
+    if(n === 1){ showResult(results[0]); }
+    else { showMultiResult(results); }
+    screen.className = 'tv-screen';
+    hint.style.opacity = '1';
+    setBtns(false);
+    spinning = false;
+  }, 2300);
+}
+
+document.getElementById('pullBtn1').addEventListener('click', ()=>doPull(1));
+document.getElementById('pullBtn10').addEventListener('click', ()=>doPull(10));
+document.getElementById('tvScreen').addEventListener('click', ()=>doPull(1));
+document.getElementById('closeResult').addEventListener('click', ()=>{
+  document.getElementById('overlay').classList.remove('show');
+});
+document.getElementById('closeMulti').addEventListener('click', ()=>{
+  document.getElementById('overlayMulti').classList.remove('show');
+});
+document.getElementById('overlay').addEventListener('click', (e)=>{
+  if(e.target.id === 'overlay') document.getElementById('overlay').classList.remove('show');
+});
+document.getElementById('overlayMulti').addEventListener('click', (e)=>{
+  if(e.target.id === 'overlayMulti') document.getElementById('overlayMulti').classList.remove('show');
+});
+</script>
+</body>
+</html>
